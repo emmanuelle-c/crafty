@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "nodemon src/app/server.js",
+    "dev:next": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "api": "nodemon src/app/server.js"
+    "lint": "next lint"
   },
   "dependencies": {
     "cors": "^2.8.5",
