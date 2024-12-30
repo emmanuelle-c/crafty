@@ -5,10 +5,10 @@ class CategorieModel extends AbstractModel{
         super({ table : "categorie"});
     }
 
-    async addCategory(category) {
-        const { name } = category;
+    async create(data) {
+        const { name } = data;
         const [row] = await this.database.query(
-            `INSERT INTO ${this.table} (name) VALUES ?`, [name]
+            `INSERT INTO ${this.table} (name) VALUES (?)`, [name]
         );
         return row;
       }
