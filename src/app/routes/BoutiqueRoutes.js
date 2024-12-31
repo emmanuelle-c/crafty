@@ -1,6 +1,6 @@
 const express = require("express");
 const BoutiqueController = require("../Controllers/BoutiqueController");
-const uploadImage = require("../services/imageUpload");
+const imageUpload = require("../services/imageUpload");
 
 const router = express.Router();
 const boutiqueController = new BoutiqueController();

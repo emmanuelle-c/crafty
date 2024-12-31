@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const next = require("next");
 const express = require("express");
+const cookieParser = require("cookie-parser");
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -20,8 +21,10 @@ app.prepare().then(() => {
   const reservationRouter = require("./routes/ReservationRoutes");
   const transactionRouter = require("./routes/TransactionRoutes");
   const photoRouter = require("./routes/PhotoRoutes");
+  const authRouter = require("./routes/AuthRoutes");
 
   server.use(express.json());
+  server.use(cookieParser());
   server.use(express.urlencoded({ extended: true }));
 
   server.use("/api/categorie", categorieRouter);
@@ -33,6 +36,7 @@ app.prepare().then(() => {
   server.use("/api/reservation", reservationRouter);
   server.use("/api/transaction", transactionRouter);
   server.use("/api/photo", photoRouter);
+  server.use("/api/auth", authRouter);
 
   // Toutes les autres routes sont gérées par Next.js
   server.all("*", (req, res) => {
