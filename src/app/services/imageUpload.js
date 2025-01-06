@@ -2,7 +2,7 @@ const multer = require("multer");
 const path = require("path");
 
 const storage = multer.diskStorage({
-  destination: path.join(__dirname, "../../public/upload/"),
+  destination: path.join(__dirname, "../uploads"),
   filename: (_, file, cb) => {
     const fileType = [
       "image/png",
