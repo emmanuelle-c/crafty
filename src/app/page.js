@@ -1,12 +1,7 @@
 export default function Home() {
   return (
-    <div>
-      <main>
-        <h1>c'est la page page.js</h1>
-      </main>
-      <footer>
-        <p>c'est le footer</p>
-      </footer>
-    </div>
+    <main>
+      <h1>Bienvenue sur la page d'accueil</h1>
+    </main>
   );
 }
