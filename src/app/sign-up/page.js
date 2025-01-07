@@ -1,12 +1,16 @@
+
 'use client';
 import { useState } from 'react';
-import Link from "next/link";
 
-
-export default function SignIn() {
+export default function SignUp() {
   const [formData, setFormData] = useState({
+    username: '',
     email: '',
-    password: ''
+    address: '',
+    postalCode: '',
+    city: '',
+    password: '',
+    confirmPassword: ''
   });
 
   const handleChange = (e) => {
@@ -15,17 +19,31 @@ export default function SignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      alert('Les mots de passe ne correspondent pas');
+      return;
+    }
+
     try {
-      const response = await fetch('/api/sign-in', {
+      const response = await fetch('/api/sign-up', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
 
       if (response.ok) {
-        alert('Connexion réussie !');
+        alert('Inscription réussie !');
+        setFormData({
+          username: '',
+          email: '',
+          address: '',
+          postalCode: '',
+          city: '',
+          password: '',
+          confirmPassword: ''
+        });
       } else {
-        alert('Erreur lors de la connexion');
+        alert('Erreur lors de l\'inscription');
       }
     } catch (error) {
       console.error('Erreur:', error);
@@ -36,110 +54,167 @@ export default function SignIn() {
   return (
     <div>
       <style jsx>{`
-        .login-form {
-          text-align: center;
+        .form-container {
+          max-width: 400px;
+          margin: 50px auto;
           padding: 20px;
+          background-color: #fff;
+          border: 1px solid #d2d5c9;
+          border-radius: 10px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .login-form h2 {
-          color: #6c757d;
+        .form-container h1 {
+          text-align: center;
+          color: #4e5b41;
+          font-size: 24px;
+          margin-bottom: 20px;
         }
 
-        .login-form input {
-          width: 80%;
+        .form-container input {
+          width: 100%;
           padding: 10px;
-          margin: 10px 0;
-          border: 1px solid #d1e7dd;
-          border-radius: 8px;
+          margin-bottom: 15px;
+          border: 1px solid #d2d5c9;
+          border-radius: 5px;
+          font-size: 14px;
+        }
+
+        .form-container input:focus {
           outline: none;
+          border-color: #8e9f69;
         }
 
-        .login-form button {
-          width: 80%;
+        .form-container .form-row {
+          display: flex;
+          justify-content: space-between;
+          gap: 10px;
+        }
+
+        .form-container button {
+          width: 100%;
           padding: 10px;
-          background-color: #d1e7dd;
+          background-color: #8e9f69;
+          color: #fff;
           border: none;
-          border-radius: 8px;
-          cursor: pointer;
+          border-radius: 5px;
           font-size: 16px;
-          color: #333;
+          cursor: pointer;
+          transition: background-color 0.3s;
         }
 
-        .login-form button:hover {
-          background-color: #badbcc;
+        .form-container button:hover {
+          background-color: #6c7d52;
         }
 
         @media (max-width: 600px) {
-          .login-form {
-            padding: 10px;
+          .form-container {
+            padding: 15px;
           }
 
-          .login-form input {
-            width: 100%;
-            padding: 12px;
-            font-size: 14px;
-          }
-
-          .login-form button {
-            width: 100%;
-            padding: 12px;
-            font-size: 14px;
-          }
-
-          .login-form h2 {
+          .form-container h1 {
             font-size: 18px;
-            margin-bottom: 10px;
           }
 
-          .login-form p {
+          .form-container input {
+            padding: 12px;
             font-size: 14px;
+          }
+
+          .form-container button {
+            padding: 12px;
+            font-size: 14px;
+          }
+
+          .form-container .form-row {
+            flex-direction: column;
+            gap: 0;
           }
         }
 
         @media (max-width: 400px) {
-          .login-form {
-            padding: 8px;
-          }
-
-          .login-form input {
-            font-size: 12px;
+          .form-container {
             padding: 10px;
           }
 
-          .login-form button {
-            font-size: 12px;
-            padding: 10px;
-          }
-
-          .login-form h2 {
+          .form-container h1 {
             font-size: 16px;
+          }
+
+          .form-container input {
+            font-size: 12px;
+            padding: 10px;
+          }
+
+          .form-container button {
+            font-size: 12px;
+            padding: 10px;
           }
         }
       `}</style>
-      <div className="container">
-        <div className="login-form">
-          <h2>Se connecter</h2>
-          <form onSubmit={handleSubmit}>
+      <div className="form-container">
+        <h1>S’inscrire</h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="username"
+            placeholder="Pseudo"
+            value={formData.username}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="address"
+            placeholder="Adresse"
+            value={formData.address}
+            onChange={handleChange}
+            required
+          />
+          <div className="form-row">
             <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
+              type="text"
+              name="postalCode"
+              placeholder="Code postal"
+              value={formData.postalCode}
               onChange={handleChange}
               required
             />
             <input
-              type="password"
-              name="password"
-              placeholder="Mot de passe"
-              value={formData.password}
+              type="text"
+              name="city"
+              placeholder="Ville"
+              value={formData.city}
               onChange={handleChange}
               required
             />
-            <button type="submit">Se connecter</button>
-          </form>
-          <p>Tu n'as pas encore de compte ? <Link href="/sign-in">s'inscrire</Link></p>
-        </div>
+          </div>
+          <input
+            type="password"
+            name="password"
+            placeholder="Mot de passe"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirmation mot de passe"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
+          <button type="submit">S’inscrire</button>
+        </form>
       </div>
     </div>
   );
