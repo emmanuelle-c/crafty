@@ -8,5 +8,6 @@ router.post("/login", AuthService.login);
 
 // Route pour rafraîchir le token
 router.post("/refresh", AuthService.refresh);
+router.post("/logout", AuthService.logout);
 
 module.exports = router;

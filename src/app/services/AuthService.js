@@ -7,16 +7,13 @@ const identifiantModel = new IdentifiantModel();
 class AuthService {
   static async login(req, res, next) {
     try {
-      const { email, mot_de_passe } = req.body;
+      const { email, password } = req.body;
 
       // Rechercher l'utilisateur par email
       const user = await identifiantModel.findByEmail(email);
-      if (!user) {
-        return res.status(404).json({ error: "Utilisateur non trouvé" });
-      }
 
       // Vérifier le mot de passe
-      const validPassword = await argon2.verify(user.mot_de_passe, mot_de_passe);
+      const validPassword = await argon2.verify(user.mot_de_passe, password);
       if (!validPassword) {
         return res.status(400).json({ error: "Identifiants incorrects" });
       }
@@ -58,12 +55,16 @@ class AuthService {
     try {
       const { refreshToken } = req.cookies;
       if (!refreshToken) {
-        return res.status(401).json({ error: "Token de rafraîchissement manquant" });
+        return res
+          .status(401)
+          .json({ error: "Token de rafraîchissement manquant" });
       }
 
       jwt.verify(refreshToken, process.env.APP_SECRET, (err, user) => {
         if (err) {
-          return res.status(403).json({ error: "Token de rafraîchissement invalide" });
+          return res
+            .status(403)
+            .json({ error: "Token de rafraîchissement invalide" });
         }
 
         const newAccessToken = jwt.sign(
@@ -74,6 +75,21 @@ class AuthService {
 
         res.header("Authorization", newAccessToken).sendStatus(200);
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async logout(req, res, next) {
+    try {
+      res
+        .clearCookie("refreshToken", {
+          httpOnly: true,
+          sameSite: "lax",
+          secure: process.env.APP_ENV === "production",
+        })
+        .status(200)
+        .json({ message: "Déconnexion réussie" });
     } catch (error) {
       next(error);
     }
