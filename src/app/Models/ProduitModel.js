@@ -6,10 +6,10 @@ class ProduitModel extends AbstractModel {
   }
 
   async create(data) {
-    const { nom, description, id_boutique } = data;
+    const { nom, description, id_boutique, prix } = data;
     const [row] = await this.database.query(
-      `INSERT INTO ${this.table} (nom, description, id_boutique) VALUES (?, ?, ?)`,
-      [nom, description, id_boutique]
+      `INSERT INTO ${this.table} (nom, description, id_boutique, prix) VALUES (?, ?, ?, ?)`,
+      [nom, description, id_boutique, prix]
     );
     return row;
   }
