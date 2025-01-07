@@ -18,6 +18,12 @@ export default function Header() {
           <li>
             <Link href="/products">Produits</Link>
           </li>
+          <li>
+            <Link href="/sign-up">se connecter</Link>
+          </li>
+          <li>
+            <Link href="/sign-in">s'inscrire</Link>
+          </li>
         </ul>
       </nav>
     </header>
