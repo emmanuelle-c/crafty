@@ -14,6 +14,14 @@ class UtilisateurModel extends AbstractModel {
     return row;
   }
 
+  async findByPseudo(pseudo) {
+    const [[user]] = await this.database.query(
+      `SELECT * FROM ${this.table} WHERE pseudo = ?`,
+      [pseudo]
+    );
+    return user;
+  }
+
   async updateRoleToVendeur(id) {
     const [row] = await this.database.query(
       `UPDATE ${this.table} SET role = 'vendeur' WHERE id_utilisateur = ?`,
