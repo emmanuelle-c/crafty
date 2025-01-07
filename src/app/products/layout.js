@@ -1,10 +1,8 @@
-// export default function ProductsLayout({ children }) {
-//     return (
-//       <div>
-//         <header>
-//           <h1>Produits</h1>
-//         </header>
-//         {children}
-//       </div>
-//     );
-//   }
+export default function ProductsLayout({ children }) {
+    return (
+      <div>
+          <h1>Page Produits</h1>
+        {children}
+      </div>
+    );
+  }

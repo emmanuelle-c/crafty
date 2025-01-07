@@ -38,4 +38,4 @@ const validateVendeurForm = async (req, res, next) => {
   else next();
 };
 
-module.exports = { validateVendeurForm };
+module.exports = validateVendeurForm;

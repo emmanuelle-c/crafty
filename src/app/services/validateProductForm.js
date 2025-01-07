@@ -31,4 +31,4 @@ const validateProductForm = (req, res, next) => {
   else next();
 };
 
-module.exports = { validateProductForm };
+module.exports = validateProductForm;

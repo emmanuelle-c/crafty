@@ -39,4 +39,4 @@ const validateUtilisateurForm = async (req, res, next) => {
   else next();
 };
 
-module.exports = { validateUtilisateurForm };
+module.exports = validateUtilisateurForm;
