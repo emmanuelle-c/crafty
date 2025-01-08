@@ -82,7 +82,7 @@ export default function SignUp() {
 
         .form-container input:focus {
           outline: none;
-          border-color: #8e9f69;
+          border-color: #98B687;
         }
 
         .form-container .form-row {
@@ -94,7 +94,7 @@ export default function SignUp() {
         .form-container button {
           width: 100%;
           padding: 10px;
-          background-color: #8e9f69;
+          background-color: #98B687;
           color: #fff;
           border: none;
           border-radius: 5px;
@@ -104,7 +104,7 @@ export default function SignUp() {
         }
 
         .form-container button:hover {
-          background-color: #6c7d52;
+          background-color: #badbcc;
         }
 
         @media (max-width: 600px) {

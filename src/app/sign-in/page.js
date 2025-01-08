@@ -49,7 +49,7 @@ export default function SignIn() {
           width: 80%;
           padding: 10px;
           margin: 10px 0;
-          border: 1px solid #d1e7dd;
+          border: 1px solid #98B687;
           border-radius: 8px;
           outline: none;
         }
@@ -57,7 +57,7 @@ export default function SignIn() {
         .login-form button {
           width: 80%;
           padding: 10px;
-          background-color: #d1e7dd;
+          background-color: #98B687;
           border: none;
           border-radius: 8px;
           cursor: pointer;
@@ -138,8 +138,12 @@ export default function SignIn() {
             />
             <button type="submit">Se connecter</button>
           </form>
-          <p>Tu n'as pas encore de compte ? <Link href="/sign-in">s'inscrire</Link></p>
-        </div>
+          <p>
+            Tu n'as pas encore de compte ?{' '}
+            <Link href="/sign-up">s'inscrire</Link>
+          </p>
+
+          </div>
       </div>
     </div>
   );

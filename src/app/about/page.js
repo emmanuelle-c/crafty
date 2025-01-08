@@ -32,7 +32,7 @@ export default function AboutPage() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          background: #d1e7dd;
+          background: #45A049;
           padding: 15px;
           border-radius: 8px;
           cursor: pointer;
