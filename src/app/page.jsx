@@ -7,22 +7,31 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 export default function Home() {
   const [products, setProducts] = useState([
-    "/images/product1.jpg",
+    "/images/product2.jpg",  // Première image remplacée
+    "/images/product2.jpg",  // Remplacer toutes les images par product2.jpg
     "/images/product2.jpg",
-    "/images/product3.jpg",
-    "/images/product4.jpg",
-    "/images/product5.jpg",
-    "/images/product6.jpg",
+    "/images/product2.jpg",
+    "/images/product2.jpg",
+    "/images/product2.jpg",
   ]);
+
+  const [creators] = useState([
+    "/images/user1.jpg",
+    "/images/user1.jpg",
+    "/images/user1.jpg",
+    "/images/user1.jpg",
+    "/images/user1.jpg",
+  ]);
+
   const [showMore, setShowMore] = useState(false);
   const { auth } = useAuth();
 
   const loadMoreProducts = () => {
     setProducts((prevProducts) => [
       ...prevProducts,
-      "/images/product7.jpg",
-      "/images/product8.jpg",
-      "/images/product9.jpg",
+      "/images/product1.jpg",  // Ajout de product2.jpg ici aussi
+      "/images/product1.jpg",
+      "/images/product1.jpg",
     ]);
     setShowMore(false);
   };
@@ -57,12 +66,13 @@ export default function Home() {
         <h2>Les produits en vogue</h2>
         <Carousel showThumbs={false} showStatus={false} infiniteLoop autoPlay>
           {products.slice(0, 5).map((product, index) => (
-            <div key={index}>
+            <div key={index} className="carousel-item">
               <Image
                 src={product}
                 alt={`Produit ${index + 1}`}
                 width={800}
                 height={600}
+                layout="intrinsic"
               />
             </div>
           ))}
@@ -79,8 +89,8 @@ export default function Home() {
           centerMode
           centerSlidePercentage={33.33}
         >
-          {products.map((creator, index) => (
-            <div key={index}>
+          {creators.map((creator, index) => (
+            <div key={index} className="creator-item">
               <Image
                 src={creator}
                 alt={`Créateur ${index + 1}`}
@@ -108,33 +118,42 @@ export default function Home() {
           ))}
         </div>
         {showMore ? (
-          <button onClick={loadMoreProducts}>Afficher plus</button>
+          <button onClick={loadMoreProducts} className="load-more-button">
+            Afficher plus
+          </button>
         ) : (
-          <button onClick={() => setShowMore(true)}>Voir plus...</button>
+          <button onClick={() => setShowMore(true)} className="see-more-button">
+            Voir plus...
+          </button>
         )}
       </section>
 
       <style jsx>{`
+        * {
+          font-family: "Arial", sans-serif;
+        }
+
         .container {
           padding: 20px;
+          background-color: #f8f8e8;
         }
 
         .welcome-section {
-          text-align: center; /* Centre le texte */
-          margin-bottom: 20px; /* Ajoute un espace sous la section */
+          text-align: center;
+          margin-bottom: 20px;
         }
 
         .welcome-section h1 {
-          margin-bottom: 10px; /* Espacement entre le titre et le paragraphe */
-          color: #365443; /* Couleur du titre */
+          margin-bottom: 10px;
+          color: #365443;
         }
 
         .welcome-section p {
-          line-height: 1.8; /* Améliore l'espacement entre les lignes pour une meilleure lisibilité */
+          line-height: 1.8;
         }
 
         h2 {
-          color: #365443; /* Applique la couleur aux sous-titres */
+          color: #365443;
           margin-bottom: 15px;
         }
 
@@ -145,29 +164,56 @@ export default function Home() {
         }
 
         .card {
+          background-color: #decdac; /* Fond des produits */
           border: 1px solid #ddd;
           border-radius: 8px;
           overflow: hidden;
-          padding: 10px;
           text-align: center;
           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .creator-item {
+          background-color: #decdac; /* Fond des créateurs */
+          border: 2px solid #ddd;
+          padding: 10px;
+          margin: 0 10px;
+          border-radius: 8px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel-item {
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+        }
+
+        .carousel-item img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover; /* Coupe l'image sans zoom */
         }
 
         button {
           margin-top: 20px;
           padding: 10px 20px;
-          background-color: #0070f3;
           color: white;
           border: none;
           border-radius: 5px;
           cursor: pointer;
-          transition:
-            background-color 0.3s ease,
-            transform 0.2s ease;
+          transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .load-more-button,
+        .see-more-button {
+          background-color: #365443; /* Couleur de fond personnalisée */
+        }
+
+        .load-more-button:hover,
+        .see-more-button:hover {
+          background-color: #2e4533; /* Couleur de survol */
         }
 
         button:hover {
-          background-color: #005bb5;
           transform: scale(1.05);
         }
       `}</style>
