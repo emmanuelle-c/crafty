@@ -26,6 +26,7 @@ export default function Header() {
 
       <style jsx>{`
         .header {
+          font-family: Arial, sans-serif;
           display: flex;
           justify-content: space-between;
           align-items: center;
