@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
 export default function AboutPage() {
   const toggleFaq = (e) => {
     const content = e.currentTarget.nextElementSibling;
-    const arrow = e.currentTarget.querySelector('.arrow');
+    const arrow = e.currentTarget.querySelector(".arrow");
 
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      arrow.innerHTML = '\u25BC'; // Down arrow
+    if (content.style.display === "block") {
+      content.style.display = "none";
+      arrow.innerHTML = "\u25BC"; // Down arrow
     } else {
-      content.style.display = 'block';
-      arrow.innerHTML = '\u25B2'; // Up arrow
+      content.style.display = "block";
+      arrow.innerHTML = "\u25B2"; // Up arrow
     }
   };
 
@@ -18,6 +18,7 @@ export default function AboutPage() {
     <div>
       <style jsx>{`
         .container {
+          font-family: Arial, sans-serif;
           max-width: 800px;
           margin: 20px auto;
           padding: 20px;
@@ -32,7 +33,7 @@ export default function AboutPage() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          background: #45A049;
+          background: #98b687;
           padding: 15px;
           border-radius: 8px;
           cursor: pointer;
@@ -83,7 +84,13 @@ export default function AboutPage() {
             <span className="arrow">&#x25BC;</span>
           </div>
           <div className="faq-content">
-            <p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression...</p>
+            <p>
+              Nous sommes une plateforme dédiée à la promotion des petits
+              fabricants éco-responsables. Notre mission est de mettre en avant
+              des artisans passionnés et engagés, en facilitant la rencontre
+              entre ces créateurs et des acheteurs en quête de produits durables
+              et respectueux de l'environnement.
+            </p>
           </div>
         </div>
 
@@ -93,7 +100,13 @@ export default function AboutPage() {
             <span className="arrow">&#x25BC;</span>
           </div>
           <div className="faq-content">
-            <p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression...</p>
+            <p>
+              Pour vous connecter, cliquez sur le bouton "Connexion" situé en
+              haut à droite de la page. Vous pourrez vous connecter en utilisant
+              votre adresse e-mail et votre mot de passe. Si vous êtes nouveau,
+              inscrivez-vous pour découvrir notre communauté de fabricants et
+              leurs produits uniques.
+            </p>
           </div>
         </div>
 
@@ -103,7 +116,13 @@ export default function AboutPage() {
             <span className="arrow">&#x25BC;</span>
           </div>
           <div className="faq-content">
-            <p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression...</p>
+            <p>
+              Vous pouvez nous contacter via notre page "Contact" pour toute
+              question ou assistance. Si vous êtes un fabricant souhaitant
+              rejoindre notre plateforme, écrivez-nous directement à
+              support@votresite.com. Nous serons ravis de vous accompagner dans
+              cette aventure éco-responsable.
+            </p>
           </div>
         </div>
       </div>
