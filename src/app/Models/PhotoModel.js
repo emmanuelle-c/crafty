@@ -13,6 +13,11 @@ class PhotoModel extends AbstractModel {
     );
     return row;
   }
+
+  async getAllPhotos() {
+    const [rows] = await this.database.query(`SELECT url FROM ${this.table}`);
+    return rows;
+  }
 }
 
 module.exports = PhotoModel;

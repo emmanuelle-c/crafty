@@ -20,6 +20,15 @@ class PhotoController extends AbstractController {
     }
   }
 
+  async getAllPhotos(req, res, next) {
+    try {
+      const photos = await this.model.getAllPhotos();
+      res.status(200).json(photos);
+    } catch (error) {
+      next(error);
+    }
+  }
+
 }
 
 module.exports = PhotoController;
