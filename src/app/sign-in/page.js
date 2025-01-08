@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../contexts/AuthContext";
 import Link from "next/link";
 
 export default function SignIn() {
@@ -10,6 +11,7 @@ export default function SignIn() {
   });
   const [errors, setErrors] = useState([]);
   const router = useRouter();
+  const { setAuth } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,7 +48,10 @@ export default function SignIn() {
         );
 
         if (response.ok) {
-          alert("connexion ok !");
+          const { user } = await response.json();
+          console.log("user", user);
+          const token = response.headers.get("Authorization");
+          setAuth(user);
           router.push("/");
         } else {
           setErrors({ login: "Identifiant inconnu" });

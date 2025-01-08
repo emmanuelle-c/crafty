@@ -1,5 +1,6 @@
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
+import { AuthProvider } from "./contexts/AuthContext";
 
 export const metadata = {
   title: "Create Next App",
@@ -10,9 +11,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <AuthProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

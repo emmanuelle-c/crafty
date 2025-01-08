@@ -14,6 +14,14 @@ class UtilisateurModel extends AbstractModel {
     return row;
   }
 
+  async findByIdentifiant(id) {
+    const [[user]] = await this.database.query(
+      `SELECT * FROM ${this.table} WHERE id_identifiant = ?`,
+      [id]
+    );
+    return user;
+  }
+
   async findByPseudo(pseudo) {
     const [[user]] = await this.database.query(
       `SELECT * FROM ${this.table} WHERE pseudo = ?`,
