@@ -50,4 +50,4 @@ const ValidateUserForm = async (req, res, next) => {
   else next();
 };
 
-module.exports = { ValidateUserForm };
+module.exports = ValidateUserForm;
