@@ -1,35 +1,65 @@
-'use client';
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../contexts/AuthContext";
 import Link from "next/link";
-
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
+  const [errors, setErrors] = useState([]);
+  const router = useRouter();
+  const { setAuth } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validate = () => {
+    const error = {};
+    if (!formData.email) {
+      error.email = "Email requis";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      error.email = "Saisissez une adresse mail valide";
+    }
+
+    if (!formData.password) {
+      error.password = "Mot de passe requis";
+    }
+
+    return error;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch('/api/sign-in', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
+    const errorData = validate();
+    if (Object.keys(errorData).length > 0) setErrors(errorData);
+    else {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_APP_HOST}/api/auth/login`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+          }
+        );
 
-      if (response.ok) {
-        alert('Connexion réussie !');
-      } else {
-        alert('Erreur lors de la connexion');
+        if (response.ok) {
+          const { user } = await response.json();
+          console.log("user", user);
+          const token = response.headers.get("Authorization");
+          setAuth(user);
+          router.push("/");
+        } else {
+          setErrors({ login: "Identifiant inconnu" });
+        }
+      } catch (error) {
+        console.error("Erreur:", error);
+        alert("Erreur serveur");
       }
-    } catch (error) {
-      console.error('Erreur:', error);
-      alert('Erreur serveur');
     }
   };
 
@@ -128,6 +158,7 @@ export default function SignIn() {
               onChange={handleChange}
               required
             />
+            {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
             <input
               type="password"
               name="password"
@@ -137,13 +168,15 @@ export default function SignIn() {
               required
             />
             <button type="submit">Se connecter</button>
+            {errors.password && (
+              <p style={{ color: "red" }}>{errors.password}</p>
+            )}
           </form>
           <p>
-            Tu n'as pas encore de compte ?{' '}
+            Tu n'as pas encore de compte ?{" "}
             <Link href="/sign-up">s'inscrire</Link>
           </p>
-
-          </div>
+        </div>
       </div>
     </div>
   );

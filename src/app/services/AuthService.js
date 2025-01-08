@@ -1,53 +1,50 @@
 const jwt = require("jsonwebtoken");
 const argon2 = require("argon2");
 const IdentifiantModel = require("../Models/IdentifiantModel");
+const UtilisateurModel = require("../Models/UtilisateurModel");
 
 const identifiantModel = new IdentifiantModel();
+const utilisateurModel = new UtilisateurModel();
 
 class AuthService {
   static async login(req, res, next) {
     try {
-      const { email, mot_de_passe } = req.body;
+      const { email, password } = req.body;
 
       // Rechercher l'utilisateur par email
       const user = await identifiantModel.findByEmail(email);
-      if (!user) {
-        return res.status(404).json({ error: "Utilisateur non trouvé" });
-      }
 
       // Vérifier le mot de passe
-      const validPassword = await argon2.verify(user.mot_de_passe, mot_de_passe);
+      const validPassword = await argon2.verify(user.mot_de_passe, password);
       if (!validPassword) {
         return res.status(400).json({ error: "Identifiants incorrects" });
       }
 
       // Générer les tokens
-      const accessToken = jwt.sign(
-        { id: user.id_utilisateur, role: user.role },
-        process.env.APP_SECRET,
-        { expiresIn: "1h" }
-      );
+      const accessToken = jwt.sign({ id: user.id_identifiant }, process.env.APP_SECRET, {
+        expiresIn: "1h",
+      });
 
-      const refreshToken = jwt.sign(
-        { id: user.id_utilisateur, role: user.role },
-        process.env.APP_SECRET,
-        { expiresIn: "1d" }
-      );
+      const refreshToken = jwt.sign({ id: user.id_identifiant }, process.env.APP_SECRET, {
+        expiresIn: "1d",
+      });
 
       // Supprimer le mot de passe des données retournées
       delete user.mot_de_passe;
-
+      const client = await utilisateurModel.findByIdentifiant(
+        user.id_identifiant
+      );
       // Retourner la réponse avec les cookies et les données utilisateur
       res
         .status(200)
         .cookie("refreshToken", refreshToken, {
-          httpOnly: true, // Empêche l'accès aux cookies via JavaScript (sécurité XSS)
-          sameSite: "lax", // Protège contre certains types d'attaques CSRF
-          secure: process.env.APP_ENV === "production", // Assure l'envoi via HTTPS uniquement en production
+          httpOnly: true,
+          sameSite: "lax",
+          secure: process.env.APP_ENV === "production",
           maxAge: 24 * 60 * 60 * 1000, // Expiration du cookie (1 jour)
         })
-        .header("Authorization", accessToken) // Inclut l'accessToken dans les headers
-        .json({ user });
+        .header("Authorization", accessToken)
+        .json({ user, client });
     } catch (error) {
       next(error);
     }
@@ -58,22 +55,41 @@ class AuthService {
     try {
       const { refreshToken } = req.cookies;
       if (!refreshToken) {
-        return res.status(401).json({ error: "Token de rafraîchissement manquant" });
+        res.status(401).json("Access Denied. No refresh token provided");
       }
+      const decoded = jwt.verify(refreshToken, process.env.APP_SECRET);
 
-      jwt.verify(refreshToken, process.env.APP_SECRET, (err, user) => {
-        if (err) {
-          return res.status(403).json({ error: "Token de rafraîchissement invalide" });
-        }
+      const user = await identifiantModel.readOne(decoded.id_identifiant);
+      if (!user) {
+        return res.status(404).json({ error: "Utilisateur non trouvé" });
+      }
+      const accessToken = jwt.sign(
+        { id: user.id_identifiant },
+        process.env.APP_SECRET,
+        { expiresIn: "1h" }
+      );
 
-        const newAccessToken = jwt.sign(
-          { id: user.id, role: user.role },
-          process.env.APP_SECRET,
-          { expiresIn: "1h" }
-        );
+      const client = await utilisateurModel.findByIdentifiant(
+        user.id_identifiant
+      );
 
-        res.header("Authorization", newAccessToken).sendStatus(200);
-      });
+      delete user.mot_de_passe;
+
+      res
+        .status(200)
+        .header("Authorization", `Bearer ${accessToken}`)
+        .json({ user, client });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async logout(req, res, next) {
+    try {
+      res
+        .clearCookie("refreshToken")
+        .status(200)
+        .json({ message: "Déconnexion réussie" });
     } catch (error) {
       next(error);
     }

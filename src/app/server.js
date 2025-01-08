@@ -28,7 +28,7 @@ app.prepare().then(() => {
   server.use(cookieParser());
   server.use(express.urlencoded({ extended: true }));
   
-  server.use("/api", restrictByIP);
+  // server.use("/api", restrictByIP);
   server.use("/api/categorie", categorieRouter);
   server.use("/api/identifiant", identifiantRouter);
   server.use("/api/utilisateur", utilisateurRouter);
